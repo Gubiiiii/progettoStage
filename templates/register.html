@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel narrow">
+    <p class="eyebrow">{{ event.name }}</p>
+    <h1>Iscrizione</h1>
+    <p class="muted">Compila i dati richiesti. Al termine riceverai un QR code personale da mostrare all'ingresso.</p>
+    <p class="muted">{{ event.remaining_seats }} posti disponibili{% if event.accessible_capacity > 0 %}, {{ event.remaining_accessible_seats }} accessibili{% endif %}.</p>
+
+    <form method="post" action="{{ url_for('register_event', event_id=event.id) }}" class="form">
+        <input type="hidden" name="event_id" value="{{ event.id }}">
+        <label>
+            Nome
+            <input name="first_name" autocomplete="given-name" value="{{ form.first_name if form else '' }}" required>
+        </label>
+        <label>
+            Cognome
+            <input name="last_name" autocomplete="family-name" value="{{ form.last_name if form else '' }}" required>
+        </label>
+        <label>
+            Email
+            <input name="email" type="email" autocomplete="email" value="{{ form.email if form else '' }}" required>
+        </label>
+        <label>
+            Telefono
+            <input name="phone" autocomplete="tel" value="{{ form.phone if form else '' }}">
+        </label>
+        <label>
+            Ente o azienda
+            <input name="organization" value="{{ form.organization if form else '' }}">
+        </label>
+        <label class="check">
+            <input name="accessible_required" type="checkbox" {% if form and form.accessible_required %}checked{% endif %}>
+            Ho bisogno di un posto accessibile o riservato
+        </label>
+        <button type="submit" class="primary">Genera QR</button>
+    </form>
+</section>
+{% endblock %}

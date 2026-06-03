@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel ticket">
+    <div>
+        <p class="eyebrow">Iscrizione completata</p>
+        <h1>{{ participant.first_name }} {{ participant.last_name }}</h1>
+        <p class="muted">{{ participant.event_name }}</p>
+        <p class="muted">{{ participant.email }}</p>
+        {% if participant.organization %}
+            <p class="muted">{{ participant.organization }}</p>
+        {% endif %}
+        {% if participant.accessible_required %}
+            <p class="status ok">Posto accessibile richiesto</p>
+        {% endif %}
+        <div class="manual-code">
+            <span>Codice manuale</span>
+            <strong>{{ format_manual_code(participant.manual_code) }}</strong>
+        </div>
+        <a class="secondary" href="{{ url_for('ticket', token=participant.token) }}">Scarica biglietto</a>
+    </div>
+    <img class="qr" src="{{ url_for('qr_image', token=participant.token) }}" alt="QR code personale">
+</section>
+{% endblock %}

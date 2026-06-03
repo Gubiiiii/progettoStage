@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel result-page">
+    {% if status == "checked" %}
+        <p class="status ok">Ingresso confermato</p>
+        <h1>{{ participant.first_name }} {{ participant.last_name }}</h1>
+        <p class="muted">{{ participant.email }}</p>
+        {% if participant.accessible_required %}
+            <p class="status ok">Posto accessibile richiesto</p>
+        {% endif %}
+    {% elif status == "already_checked" %}
+        <p class="status warning">QR gia utilizzato</p>
+        <h1>{{ participant.first_name }} {{ participant.last_name }}</h1>
+        <p class="muted">Questo ingresso era gia stato registrato.</p>
+        {% if participant.accessible_required %}
+            <p class="status ok">Posto accessibile richiesto</p>
+        {% endif %}
+    {% else %}
+        <p class="status error">QR non valido</p>
+        <h1>Codice non riconosciuto</h1>
+    {% endif %}
+    <a class="secondary" href="{{ url_for('scan') }}">Torna allo scanner</a>
+</section>
+{% endblock %}

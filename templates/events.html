@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="toolbar">
+    <div>
+        <h1>Eventi</h1>
+        <p class="muted">Gestisci capienza totale, posti accessibili e apertura iscrizioni.</p>
+    </div>
+    <a class="primary" href="{{ url_for('new_event') }}">Nuovo evento</a>
+</section>
+
+<section class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Evento</th>
+                <th>Luogo</th>
+                <th>Posti</th>
+                <th>Accessibili</th>
+                <th>Stato</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>
+                        {{ event.name }}
+                        {% if event.event_date %}
+                            <br><span class="muted">{{ event.event_date }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ event.venue or "-" }}</td>
+                    <td>{{ event.registered_count }}/{{ event.capacity }}</td>
+                    <td>{{ event.accessible_count }}/{{ event.accessible_capacity }}</td>
+                    <td>
+                        {% if event.is_open %}
+                            <span class="pill ok">Aperto</span>
+                        {% else %}
+                            <span class="pill">Chiuso</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="secondary compact" href="{{ url_for('edit_event', event_id=event.id) }}">Modifica</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="empty">Nessun evento creato.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
+

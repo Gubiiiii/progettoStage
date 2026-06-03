@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="toolbar">
+    <div>
+        <h1>Iscritti</h1>
+        <p class="muted">{{ stats.total }} registrati, {{ stats.checked or 0 }} ingressi confermati, {{ stats.accessible or 0 }} posti accessibili richiesti</p>
+    </div>
+    <form method="get" class="search">
+        <select name="event_id" onchange="this.form.submit()">
+            <option value="all" {% if selected_event_id == "all" %}selected{% endif %}>Tutti gli eventi</option>
+            {% for event in events %}
+                <option value="{{ event.id }}" {% if selected_event_id|string == event.id|string %}selected{% endif %}>
+                    {{ event.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <input name="q" value="{{ q }}" placeholder="Cerca nome, email, ente">
+        <button class="secondary" type="submit">Cerca</button>
+    </form>
+</section>
+
+<section class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Evento</th>
+                <th>Email</th>
+                <th>Ente</th>
+                <th>Accessibile</th>
+                <th>Codice</th>
+                <th>Stato</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in participants %}
+                <tr>
+                    <td>{{ person.first_name }} {{ person.last_name }}</td>
+                    <td>{{ person.event_name }}</td>
+                    <td>{{ person.email }}</td>
+                    <td>{{ person.organization or "-" }}</td>
+                    <td>{{ "Si" if person.accessible_required else "No" }}</td>
+                    <td><span class="code">{{ format_manual_code(person.manual_code) }}</span></td>
+                    <td>
+                        {% if person.checked_in_at %}
+                            <span class="pill ok">Entrato</span>
+                        {% else %}
+                            <span class="pill">Atteso</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form
+                            method="post"
+                            action="{{ url_for('delete_participant', participant_id=person.id) }}"
+                            onsubmit="return confirm('Eliminare questo iscritto?');"
+                        >
+                            <button class="danger" type="submit">Elimina</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" class="empty">Nessun iscritto trovato.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

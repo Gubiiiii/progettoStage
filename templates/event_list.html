@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="toolbar">
+    <div>
+        <h1>Eventi disponibili</h1>
+        <p class="muted">Scegli l'evento a cui vuoi iscriverti.</p>
+    </div>
+</section>
+
+<section class="event-grid">
+    {% for event in events %}
+        <article class="event-card">
+            <div>
+                <h2>{{ event.name }}</h2>
+                {% if event.event_date %}
+                    <p class="muted">{{ event.event_date }}</p>
+                {% endif %}
+                {% if event.venue %}
+                    <p class="muted">{{ event.venue }}</p>
+                {% endif %}
+            </div>
+            <div class="event-stats">
+                <span>{{ event.remaining_seats }} posti rimasti</span>
+                <span>{{ event.remaining_accessible_seats }} posti accessibili</span>
+            </div>
+            {% if event.remaining_seats > 0 %}
+                <a class="primary" href="{{ url_for('register_event', event_id=event.id) }}">Iscriviti</a>
+            {% else %}
+                <span class="status warning">Posti esauriti</span>
+            {% endif %}
+        </article>
+    {% else %}
+        <section class="panel narrow">
+            <h1>Nessun evento aperto</h1>
+            <p class="muted">Al momento non ci sono eventi disponibili per l'iscrizione.</p>
+        </section>
+    {% endfor %}
+</section>
+{% endblock %}
+

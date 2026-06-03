@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel narrow">
+    <h1>{{ "Modifica evento" if event else "Nuovo evento" }}</h1>
+    <form method="post" class="form">
+        <label>
+            Nome evento
+            <input name="name" value="{{ event.name if event else '' }}" required>
+        </label>
+        <label>
+            Data
+            <input name="event_date" type="date" value="{{ event.event_date if event else '' }}">
+        </label>
+        <label>
+            Luogo o teatro
+            <input name="venue" value="{{ event.venue if event else '' }}">
+        </label>
+        <label>
+            Capienza totale
+            <input name="capacity" type="number" min="0" value="{{ event.capacity if event else 100 }}" required>
+        </label>
+        <label>
+            Posti accessibili
+            <input name="accessible_capacity" type="number" min="0" value="{{ event.accessible_capacity if event else 0 }}" required>
+        </label>
+        <label class="check">
+            <input name="is_open" type="checkbox" {% if not event or event.is_open %}checked{% endif %}>
+            Iscrizioni aperte
+        </label>
+        <button type="submit" class="primary">Salva</button>
+    </form>
+</section>
+{% endblock %}
+

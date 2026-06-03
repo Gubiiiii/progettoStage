@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ event_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('index') }}">{{ event_name }}</a>
+        <nav>
+            <a href="{{ url_for('index') }}">Iscrizione</a>
+            {% if session.get("admin") %}
+                <a href="{{ url_for('scan') }}">Scanner</a>
+                <a href="{{ url_for('staff_events') }}">Eventi</a>
+                <a href="{{ url_for('participants') }}">Iscritti</a>
+                <a href="{{ url_for('logout') }}">Esci</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Area staff</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="page">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <p class="message {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

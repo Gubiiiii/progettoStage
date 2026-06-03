@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel scan-panel">
+    <div class="scan-head">
+        <div>
+            <h1>Controllo ingresso</h1>
+            <p class="muted">Inquadra il QR, usa una pistola scanner oppure inserisci il codice manuale del biglietto.</p>
+        </div>
+        <button id="cameraButton" class="secondary" type="button">Attiva fotocamera</button>
+    </div>
+
+    <video id="preview" class="preview" playsinline muted hidden></video>
+
+    <form id="scanForm" class="scan-form">
+        <input id="codeInput" name="code" autocomplete="off" placeholder="Scansiona QR o inserisci codice manuale" autofocus>
+        <button class="primary" type="submit">Verifica</button>
+    </form>
+
+    <div id="result" class="result idle">
+        In attesa di scansione.
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='scan.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel ticket">
+    <div>
+        <p class="eyebrow">Biglietto personale</p>
+        <h1>{{ participant.first_name }} {{ participant.last_name }}</h1>
+        <p class="muted">{{ participant.email }}</p>
+        {% if participant.checked_in_at %}
+            <p class="status warning">Ingresso gia registrato</p>
+        {% else %}
+            <p class="status ok">QR valido</p>
+        {% endif %}
+    </div>
+    <img class="qr" src="{{ url_for('qr_image', token=participant.token) }}" alt="QR code personale">
+</section>
+{% endblock %}
+

@@ -299,9 +299,11 @@ def create_app(test_config: dict | None = None) -> Flask:
         participant = db.execute(
             "SELECT * FROM participants WHERE id = ?", (participant_id,)
         ).fetchone()
+        event_id = request.args.get("event_id", "all")
+        q = request.args.get("q", "")
         if participant is None:
             flash("Iscritto non trovato.", "error")
-            return redirect(url_for("participants"))
+            return redirect(url_for("participants", event_id=event_id, q=q))
 
         db.execute("DELETE FROM participants WHERE id = ?", (participant_id,))
         db.commit()
@@ -309,7 +311,7 @@ def create_app(test_config: dict | None = None) -> Flask:
             f"Iscritto eliminato: {participant['first_name']} {participant['last_name']}.",
             "success",
         )
-        return redirect(url_for("participants"))
+        return redirect(url_for("participants", event_id=event_id, q=q))
 
     def save_event(event_id: int | None = None):
         name = request.form.get("name", "").strip()

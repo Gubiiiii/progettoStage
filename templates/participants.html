@@ -37,11 +37,17 @@
         <tbody>
             {% for person in participants %}
                 <tr>
-                    <td>{{ person.first_name }} {{ person.last_name }}</td>
-                    <td>{{ person.event_name }}</td>
-                    <td>{{ person.email }}</td>
-                    <td>{{ person.organization or "-" }}</td>
-                    <td>{{ "Si" if person.accessible_required else "No" }}</td>
+                    <td><span class="truncate" title="{{ person.first_name }} {{ person.last_name }}">{{ person.first_name }} {{ person.last_name }}</span></td>
+                    <td><span class="truncate" title="{{ person.event_name }}">{{ person.event_name }}</span></td>
+                    <td><span class="truncate" title="{{ person.email }}">{{ person.email }}</span></td>
+                    <td><span class="truncate" title="{{ person.organization or '-' }}">{{ person.organization or "-" }}</span></td>
+                    <td>
+                        {% if person.accessible_required %}
+                            <span class="pill ok" title="Posto accessibile richiesto">♿ Sì</span>
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
                     <td><span class="code">{{ format_manual_code(person.manual_code) }}</span></td>
                     <td>
                         {% if person.checked_in_at %}
@@ -53,7 +59,7 @@
                     <td>
                         <form
                             method="post"
-                            action="{{ url_for('delete_participant', participant_id=person.id) }}"
+                            action="{{ url_for('delete_participant', participant_id=person.id) }}?event_id={{ selected_event_id }}&q={{ q }}"
                             onsubmit="return confirm('Eliminare questo iscritto?');"
                         >
                             <button class="danger" type="submit">Elimina</button>

@@ -327,6 +327,7 @@ button.danger:hover {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 th,
@@ -334,12 +335,31 @@ td {
     border-bottom: 1px solid var(--line);
     padding: 13px 10px;
     text-align: left;
+    overflow: hidden;
 }
 
 th {
     color: var(--muted);
     font-size: 0.85rem;
     text-transform: uppercase;
+}
+
+table th:nth-child(1), table td:nth-child(1) { width: 14%; }
+table th:nth-child(2), table td:nth-child(2) { width: 15%; }
+table th:nth-child(3), table td:nth-child(3) { width: 18%; }
+table th:nth-child(4), table td:nth-child(4) { width: 13%; }
+table th:nth-child(5), table td:nth-child(5) { width: 9%;  }
+table th:nth-child(6), table td:nth-child(6) { width: 11%; }
+table th:nth-child(7), table td:nth-child(7) { width: 9%;  }
+table th:nth-child(8), table td:nth-child(8) { width: 11%; }
+
+.truncate {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: default;
 }
 
 .pill {
